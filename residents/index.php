@@ -22,6 +22,7 @@ try {
 
   $where = [];
   $params = [];
+  $where[] = 'isArchive = 0';
   if ($q !== '') {
     $where[] = "(id = :idExact OR first_name LIKE :q OR last_name LIKE :q OR middle_name LIKE :q OR address LIKE :q OR occupation LIKE :q)";
     $params[':idExact'] = ctype_digit($q) ? (int)$q : -1;
