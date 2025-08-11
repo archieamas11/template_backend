@@ -22,7 +22,19 @@ try {
 
   $where = [];
   $params = [];
-  $where[] = 'isArchive = 0';
+
+  // Add archive filter only if column exists
+  $hasArchiveCol = false;
+  try {
+    $colCheck = $pdo->query("SHOW COLUMNS FROM residents LIKE 'isArchive'");
+    $hasArchiveCol = (bool)$colCheck->fetch();
+  } catch (Throwable $e) {
+    $hasArchiveCol = false;
+  }
+  if ($hasArchiveCol) {
+    $where[] = 'isArchive = 0';
+  }
+
   if ($q !== '') {
     $where[] = "(id = :idExact OR first_name LIKE :q OR last_name LIKE :q OR middle_name LIKE :q OR address LIKE :q OR occupation LIKE :q)";
     $params[':idExact'] = ctype_digit($q) ? (int)$q : -1;
@@ -39,7 +51,7 @@ try {
 
   $whereSql = count($where) ? ('WHERE ' . implode(' AND ', $where)) : '';
 
-  // Compute total rows matching filters. Avoid using PDO::query with placeholders.
+  // Compute total rows matching filters
   if (count($where)) {
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM residents $whereSql");
     foreach ($params as $k => $v) {

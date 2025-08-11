@@ -41,20 +41,21 @@ CREATE TABLE `residents` (
   `civil_status` enum('Single','Married','Divorced','Widowed') DEFAULT 'Single',
   `created_by` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `isArchive` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `residents`
 --
 
-INSERT INTO `residents` (`id`, `first_name`, `last_name`, `middle_name`, `age`, `gender`, `address`, `barangay`, `contact_number`, `occupation`, `civil_status`, `created_by`, `created_at`, `updated_at`) VALUES
-(1, 'Juan', 'Dela Cruz', 'Santos', 35, 'Male', '123 Main St', 'Barangay 1', '09171234567', 'Teacher', 'Married', 2, '2025-08-09 15:23:49', '2025-08-09 15:23:49'),
-(2, 'Maria', 'Garcia', 'Lopez', 28, 'Female', '456 Oak Ave', 'Barangay 1', '09181234567', 'Nurse', 'Single', 2, '2025-08-09 15:23:49', '2025-08-09 15:23:49'),
-(3, 'Pedro', 'Rodriguez', 'Martinez', 42, 'Male', '789 Pine St', 'Barangay 2', '09191234567', 'Driver', 'Married', 3, '2025-08-09 15:23:49', '2025-08-09 15:23:49'),
-(4, 'Ana', 'Gonzales', 'Silva', 31, 'Female', '321 Elm St', 'Barangay 2', '09201234567', 'Store Owner', 'Divorced', 3, '2025-08-09 15:23:49', '2025-08-09 15:23:49'),
-(5, 'Carlos', 'Mendoza', 'Cruz', 25, 'Male', '654 Maple Ave', 'Barangay 3', '09211234567', 'Student', 'Single', 4, '2025-08-09 15:23:49', '2025-08-09 15:23:49'),
-(6, 'Rosa', 'Fernandez', 'Reyes', 38, 'Female', '987 Cedar Rd', 'Barangay 3', '09221234567', 'Seamstress', 'Widowed', 4, '2025-08-09 15:23:49', '2025-08-09 15:23:49');
+INSERT INTO `residents` (`id`, `first_name`, `last_name`, `middle_name`, `age`, `gender`, `address`, `barangay`, `contact_number`, `occupation`, `civil_status`, `created_by`, `created_at`, `updated_at`, `isArchive`) VALUES
+(1, 'Juan', 'Dela Cruz', 'Santos', 35, 'Male', '123 Main St', 'Barangay 1', '09171234567', 'Teacher', 'Married', 2, '2025-08-09 15:23:49', '2025-08-09 15:23:49', 0),
+(2, 'Maria', 'Garcia', 'Lopez', 28, 'Female', '456 Oak Ave', 'Barangay 1', '09181234567', 'Nurse', 'Single', 2, '2025-08-09 15:23:49', '2025-08-09 15:23:49', 0),
+(3, 'Pedro', 'Rodriguez', 'Martinez', 42, 'Male', '789 Pine St', 'Barangay 2', '09191234567', 'Driver', 'Married', 3, '2025-08-09 15:23:49', '2025-08-09 15:23:49', 0),
+(4, 'Ana', 'Gonzales', 'Silva', 31, 'Female', '321 Elm St', 'Barangay 2', '09201234567', 'Store Owner', 'Divorced', 3, '2025-08-09 15:23:49', '2025-08-09 15:23:49', 0),
+(5, 'Carlos', 'Mendoza', 'Cruz', 25, 'Male', '654 Maple Ave', 'Barangay 3', '09211234567', 'Student', 'Single', 4, '2025-08-09 15:23:49', '2025-08-09 15:23:49', 0),
+(6, 'Rosa', 'Fernandez', 'Reyes', 38, 'Female', '987 Cedar Rd', 'Barangay 3', '09221234567', 'Seamstress', 'Widowed', 4, '2025-08-09 15:23:49', '2025-08-09 15:23:49', 0);
 
 -- --------------------------------------------------------
 
