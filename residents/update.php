@@ -16,8 +16,12 @@ try {
   $allowed = ['first_name','last_name','middle_name','age','gender','address','barangay','contact_number','occupation','civil_status'];
   foreach ($allowed as $k) {
     if (array_key_exists($k, $input)) {
+      if (in_array($k, ['first_name','last_name','middle_name','address','barangay','occupation'], true) && is_string($input[$k])) {
+        $params[":$k"] = ucwords(strtolower($input[$k]));
+      } else {
+        $params[":$k"] = $input[$k];
+      }
       $fields[] = "$k = :$k";
-      $params[":$k"] = $input[$k];
     }
   }
   if (empty($fields)) {
