@@ -1,7 +1,9 @@
 <?php
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-$allowed_origins = 'https://finisterre.vercel.app';
-if ($origin === $allowed_origins) {
+// 🌐 CORS: Allow origins from env (CORS_ALLOWED_ORIGINS, comma-separated)
+$allowed_origins_env = $_ENV['CORS_ALLOWED_ORIGINS'] ?? '';
+$allowed_origins = array_map('trim', explode(',', $allowed_origins_env));
+if ($allowed_origins_env && in_array($origin, $allowed_origins, true)) {
     header("Access-Control-Allow-Origin: $origin");
     header("Access-Control-Allow-Credentials: true");
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
@@ -36,10 +38,10 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 }
 
 $DB_HOST = $_ENV['DB_HOST'] ?? 'localhost';
-$DB_NAME = $_ENV['DB_NAME'] ?? 'template';
-$DB_USER = $_ENV['DB_USER'] ?? 'root';
+$DB_NAME = $_ENV['DB_NAME'] ?? 'default';
+$DB_USER = $_ENV['DB_USER'] ?? 'mysql';
 $DB_PASS = $_ENV['DB_PASS'] ?? '';
-$JWT_SECRET = $_ENV['JWT_SECRET'] ?? 'change_me';
+$JWT_SECRET = $_ENV['JWT_SECRET'] ?? '';
 $JWT_EXPIRES = intval($_ENV['JWT_EXPIRES'] ?? '3600');
 
 function db(): PDO {
