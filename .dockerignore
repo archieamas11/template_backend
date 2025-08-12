@@ -1,0 +1,7 @@
+# Ignore local dev artifacts
+.git
+.env
+vendor/
+node_modules/
+.DS_Store
+ayuda_db.sql
