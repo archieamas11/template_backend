@@ -1,9 +1,7 @@
 <?php
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-// 🌐 CORS: Allow origins from env (CORS_ALLOWED_ORIGINS, comma-separated)
-$allowed_origins_env = $_ENV['CORS_ALLOWED_ORIGINS'] ?? '';
-$allowed_origins = array_map('trim', explode(',', $allowed_origins_env));
-if ($allowed_origins_env && in_array($origin, $allowed_origins, true)) {
+$allowed_origins = 'https://finisterre.vercel.app';
+if ($origin === $allowed_origins) {
     header("Access-Control-Allow-Origin: $origin");
     header("Access-Control-Allow-Credentials: true");
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
@@ -38,26 +36,11 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 }
 
 $DB_HOST = $_ENV['DB_HOST'] ?? 'localhost';
-$DB_NAME = $_ENV['DB_NAME'] ?? 'default';
-$DB_USER = $_ENV['DB_USER'] ?? 'mysql';
+$DB_NAME = $_ENV['DB_NAME'] ?? 'template';
+$DB_USER = $_ENV['DB_USER'] ?? 'root';
 $DB_PASS = $_ENV['DB_PASS'] ?? '';
-$JWT_SECRET = $_ENV['JWT_SECRET'] ?? '';
+$JWT_SECRET = $_ENV['JWT_SECRET'] ?? 'change_me';
 $JWT_EXPIRES = intval($_ENV['JWT_EXPIRES'] ?? '3600');
-
-// 🛡️ Validate required envs for production
-if (php_sapi_name() !== 'cli') {
-    $missing = [];
-    if ($DB_HOST === 'localhost') $missing[] = 'DB_HOST';
-    if ($DB_NAME === 'default') $missing[] = 'DB_NAME';
-    if ($DB_USER === 'mysql' && empty($DB_PASS)) $missing[] = 'DB_PASS';
-    if (empty($JWT_SECRET)) $missing[] = 'JWT_SECRET';
-    if (!empty($missing)) {
-        http_response_code(500);
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode(['error' => 'Missing or insecure environment variables', 'missing' => $missing], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-}
 
 function db(): PDO {
     global $DB_HOST, $DB_NAME, $DB_USER, $DB_PASS;
