@@ -44,6 +44,21 @@ $DB_PASS = $_ENV['DB_PASS'] ?? '';
 $JWT_SECRET = $_ENV['JWT_SECRET'] ?? '';
 $JWT_EXPIRES = intval($_ENV['JWT_EXPIRES'] ?? '3600');
 
+// 🛡️ Validate required envs for production
+if (php_sapi_name() !== 'cli') {
+    $missing = [];
+    if ($DB_HOST === 'localhost') $missing[] = 'DB_HOST';
+    if ($DB_NAME === 'default') $missing[] = 'DB_NAME';
+    if ($DB_USER === 'mysql' && empty($DB_PASS)) $missing[] = 'DB_PASS';
+    if (empty($JWT_SECRET)) $missing[] = 'JWT_SECRET';
+    if (!empty($missing)) {
+        http_response_code(500);
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode(['error' => 'Missing or insecure environment variables', 'missing' => $missing], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+}
+
 function db(): PDO {
     global $DB_HOST, $DB_NAME, $DB_USER, $DB_PASS;
     $dsn = "mysql:host={$DB_HOST};dbname={$DB_NAME};charset=utf8mb4";
